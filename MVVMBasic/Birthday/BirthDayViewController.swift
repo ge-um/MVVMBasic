@@ -146,8 +146,8 @@ class BirthDayViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel.onResultButtonTapped = { [weak self] in
-            self?.resultLabel.text = self?.viewModel.resultText
+        viewModel.onResultButtonTapped = { [unowned self] in
+            self.resultLabel.text = self.viewModel.resultText
         }
     }
     

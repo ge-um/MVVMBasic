@@ -93,8 +93,8 @@ class CurrencyViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel.onConvertButtonTapped = { [weak self] in
-            self?.resultLabel.text = self?.viewModel.resultText
+        viewModel.onConvertButtonTapped = { [unowned self] in
+            self.resultLabel.text = self.viewModel.resultText
         }
     }
      

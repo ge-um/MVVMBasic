@@ -66,8 +66,8 @@ class WordCounterViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel.onCountChanged = { [weak self] in
-            self?.countLabel.text = self?.viewModel.resultText
+        viewModel.onCountChanged = { [unowned self] in
+            self.countLabel.text = self.viewModel.resultText
         }
     }
 }
