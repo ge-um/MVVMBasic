@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let currencyVC = CurrencyViewController()
         currencyVC.tabBarItem = UITabBarItem(title: "환율", image: UIImage(systemName: "dollarsign.bank.building"), tag: 4)
         let mbtiVC = MBTIViewController()
-        mbtiVC.tabBarItem = UITabBarItem(title: "MBTI", image: UIImage(systemName: "erson.circle"), tag: 5)
+        mbtiVC.tabBarItem = UITabBarItem(title: "MBTI", image: UIImage(systemName: "person.circle"), tag: 5)
         
         tabBarController.viewControllers = [ageVC, bmiVC, birthDayVC, wordCounterVC, currencyVC, mbtiVC]
         tabBarController.tabBar.tintColor = .systemBlue
