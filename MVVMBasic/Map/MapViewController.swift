@@ -12,12 +12,25 @@ import SnapKit
 class MapViewController: UIViewController {
      
     private let mapView = MKMapView()
-     
+    
+    private let list = RestaurantList.restaurantArray
+    private let allAnnotations = RestaurantList.restaurantArray.map {
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
+        annotation.title = $0.name
+        annotation.subtitle = $0.address
+        
+        return annotation
+    }
+    
+    private var displayedAnnotations: [MKPointAnnotation] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupMapView()
-        addSeoulStationAnnotation()
+        setUpInitialData()
     }
      
     private func setupUI() {
@@ -43,23 +56,31 @@ class MapViewController: UIViewController {
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .none
          
-        let seoulStationCoordinate = CLLocationCoordinate2D(latitude: 37.5547, longitude: 126.9706)
+        guard let first = list.first else {
+            return
+        }
+        
+        let firstRestaurantCoordinate = CLLocationCoordinate2D(latitude: first.latitude, longitude: first.longitude)
         let region = MKCoordinateRegion(
-            center: seoulStationCoordinate,
+            center: firstRestaurantCoordinate,
             latitudinalMeters: 2000,
             longitudinalMeters: 2000
         )
         mapView.setRegion(region, animated: true)
     }
     
-    private func addSeoulStationAnnotation() {
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: 37.5547, longitude: 126.9706)
-        annotation.title = "서울역"
-        annotation.subtitle = "대한민국 서울특별시"
-        mapView.addAnnotation(annotation)
+    private func setUpInitialData() {
+        displayedAnnotations = allAnnotations
+        mapView.addAnnotations(displayedAnnotations)
     }
-     
+    
+    private func addAnnotation(restaurant: Restaurant) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = CLLocationCoordinate2D(latitude: restaurant.latitude, longitude: restaurant.longitude)
+        annotation.title = restaurant.name
+        annotation.subtitle = restaurant.address
+    }
+
     @objc private func rightBarButtonTapped() {
         let alertController = UIAlertController(
             title: "메뉴 선택",
@@ -67,19 +88,49 @@ class MapViewController: UIViewController {
             preferredStyle: .actionSheet
         )
         
-        let alert1Action = UIAlertAction(title: "얼럿 1", style: .default) { _ in
-            print("얼럿 1이 선택되었습니다.")
+        let alert1Action = UIAlertAction(title: "전체", style: .default) { _ in
+            self.mapView.addAnnotations(self.allAnnotations)
+        }
+
+
+        let alert2Action = UIAlertAction(title: "한식", style: .default) { _ in
+            self.mapView.removeAnnotations(self.mapView.annotations)
+
+            self.displayedAnnotations = {
+                RestaurantList.restaurantArray.filter { $0.category == "한식"}.map {
+                    
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
+                    annotation.title = $0.name
+                    annotation.subtitle = $0.address
+                    
+                    return annotation
+                }
+            }()
+            self.mapView.addAnnotations(self.displayedAnnotations)
         }
         
-        let alert2Action = UIAlertAction(title: "얼럿 2", style: .default) { _ in
-            print("얼럿 2가 선택되었습니다.")
-        }
-        
-        let alert3Action = UIAlertAction(title: "얼럿 3", style: .default) { _ in
+        let alert3Action = UIAlertAction(title: "양식", style: .default) { _ in
+            self.mapView.removeAnnotations(self.mapView.annotations)
+
+            self.displayedAnnotations = {
+                RestaurantList.restaurantArray.filter { $0.category == "양식"}.map {
+                    
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
+                    annotation.title = $0.name
+                    annotation.subtitle = $0.address
+                    
+                    return annotation
+                }
+            }()
+            self.mapView.addAnnotations(self.displayedAnnotations)
             print("얼럿 3이 선택되었습니다.")
         }
         
         let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
+            self.mapView.removeAnnotations(self.mapView.annotations)
+
             print("취소가 선택되었습니다.")
         }
         
