@@ -9,6 +9,9 @@ import Foundation
 
 enum BirthdayValidationError {
     case `nil`
+    case noYear
+    case noMonth
+    case noDay
     case notNumber
     case outOfRangeYear
     case outOfRangeMonth
@@ -20,6 +23,12 @@ extension BirthdayValidationError: LocalizedError {
         switch self {
         case .nil:
             return "nil입니다."
+        case .noYear:
+            return "년도를 입력해주세요"
+        case .noMonth:
+            return "달을 입력해주세요"
+        case .noDay:
+            return "날짜를 입력해주세요"
         case .notNumber:
             return "숫자를 입력해주세요"
         case .outOfRangeYear:

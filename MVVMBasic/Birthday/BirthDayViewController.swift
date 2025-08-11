@@ -146,13 +146,14 @@ class BirthDayViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel.onResultButtonTapped = { [unowned self] in
-            self.resultLabel.text = self.viewModel.resultText
+        viewModel.resultText.bind { [unowned self] text in
+            self.resultLabel.text = text
         }
     }
     
     @objc func resultButtonTapped() {
-        viewModel.dateString = (yearTextField.text, monthTextField.text, dayTextField.text)
+        viewModel.dateString.value = (yearTextField.text, monthTextField.text, dayTextField.text)
+        
         view.endEditing(true)
     }
 }
