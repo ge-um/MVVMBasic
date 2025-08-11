@@ -13,13 +13,13 @@ final class BirthdayViewModel {
     var resultText: Observable<String?> = Observable("")
     
     init() {
-        dateString.bind { (year, month, day) in
-            self.resultText.value = self.generateResultMessage()
+        dateString.bind { dateString in
+            self.resultText.value = self.generateResultMessage(dateString)
         }
     }
     
-    private func validateDateComponents() throws (BirthdayValidationError){
-        guard let yearText = dateString.value.year, let monthText = dateString.value.month, let dayText = dateString.value.day else {
+    private func validateDateComponents(_ dateString: (year: String?, month: String?, day: String?)) throws (BirthdayValidationError){
+        guard let yearText = dateString.year, let monthText = dateString.month, let dayText = dateString.day else {
             throw .nil
         }
         guard !yearText.isEmpty else {
@@ -62,11 +62,11 @@ final class BirthdayViewModel {
         return components.day!
     }
     
-    private func generateResultMessage() -> String? {
+    private func generateResultMessage(_ dateString: (year: String?, month: String?, day: String?)) -> String? {
         do {
-            try validateDateComponents()
+            try validateDateComponents(dateString)
             
-            let (year, month, day) = unwrapDateComponents()
+            let (year, month, day) = unwrapDateComponents(dateString)
             let diff = calculateDayDifference(year: year, month: month, day: day)
             
             return formattedDayDifference(diff)
@@ -75,10 +75,10 @@ final class BirthdayViewModel {
         }
     }
     
-    private func unwrapDateComponents() -> (Int, Int, Int) {
-        let year = Int(dateString.value.year!)!
-        let month = Int(dateString.value.month!)!
-        let day = Int(dateString.value.day!)!
+    private func unwrapDateComponents(_ dateString: (year: String?, month: String?, day: String?)) -> (Int, Int, Int) {
+        let year = Int(dateString.year!)!
+        let month = Int(dateString.month!)!
+        let day = Int(dateString.day!)!
         return (year, month, day)
     }
     
