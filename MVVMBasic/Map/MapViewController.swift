@@ -73,13 +73,6 @@ class MapViewController: UIViewController {
         displayedAnnotations = allAnnotations
         mapView.addAnnotations(displayedAnnotations)
     }
-    
-    private func addAnnotation(restaurant: Restaurant) {
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: restaurant.latitude, longitude: restaurant.longitude)
-        annotation.title = restaurant.name
-        annotation.subtitle = restaurant.address
-    }
 
     @objc private func rightBarButtonTapped() {
         let alertController = UIAlertController(
