@@ -88,56 +88,49 @@ class MapViewController: UIViewController {
             preferredStyle: .actionSheet
         )
         
-        let alert1Action = UIAlertAction(title: "전체", style: .default) { _ in
-            self.mapView.addAnnotations(self.allAnnotations)
-        }
+        Category.allCases.forEach { title in
+            let alertAction = UIAlertAction(title: title.rawValue, style: .default) { _ in
+                switch title {
+                case .all:
+                    self.mapView.addAnnotations(self.allAnnotations)
+                case .korean:
+                    self.mapView.removeAnnotations(self.mapView.annotations)
 
-
-        let alert2Action = UIAlertAction(title: "한식", style: .default) { _ in
-            self.mapView.removeAnnotations(self.mapView.annotations)
-
-            self.displayedAnnotations = {
-                RestaurantList.restaurantArray.filter { $0.category == "한식"}.map {
+                    self.displayedAnnotations = {
+                        RestaurantList.restaurantArray.filter { $0.category == "한식"}.map {
+                            
+                            let annotation = MKPointAnnotation()
+                            annotation.coordinate = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
+                            annotation.title = $0.name
+                            annotation.subtitle = $0.address
+                            
+                            return annotation
+                        }
+                    }()
                     
-                    let annotation = MKPointAnnotation()
-                    annotation.coordinate = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
-                    annotation.title = $0.name
-                    annotation.subtitle = $0.address
-                    
-                    return annotation
+                    self.mapView.addAnnotations(self.displayedAnnotations)
+                case .western:
+                    self.mapView.removeAnnotations(self.mapView.annotations)
+
+                    self.displayedAnnotations = {
+                        RestaurantList.restaurantArray.filter { $0.category == "양식"}.map {
+                            
+                            let annotation = MKPointAnnotation()
+                            annotation.coordinate = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
+                            annotation.title = $0.name
+                            annotation.subtitle = $0.address
+                            
+                            return annotation
+                        }
+                    }()
+                    self.mapView.addAnnotations(self.displayedAnnotations)
+                case .cancel:
+                    self.mapView.removeAnnotations(self.mapView.annotations)
                 }
-            }()
-            self.mapView.addAnnotations(self.displayedAnnotations)
+                
+            }
+            alertController.addAction(alertAction)
         }
-        
-        let alert3Action = UIAlertAction(title: "양식", style: .default) { _ in
-            self.mapView.removeAnnotations(self.mapView.annotations)
-
-            self.displayedAnnotations = {
-                RestaurantList.restaurantArray.filter { $0.category == "양식"}.map {
-                    
-                    let annotation = MKPointAnnotation()
-                    annotation.coordinate = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
-                    annotation.title = $0.name
-                    annotation.subtitle = $0.address
-                    
-                    return annotation
-                }
-            }()
-            self.mapView.addAnnotations(self.displayedAnnotations)
-            print("얼럿 3이 선택되었습니다.")
-        }
-        
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
-            self.mapView.removeAnnotations(self.mapView.annotations)
-
-            print("취소가 선택되었습니다.")
-        }
-        
-        alertController.addAction(alert1Action)
-        alertController.addAction(alert2Action)
-        alertController.addAction(alert3Action)
-        alertController.addAction(cancelAction)
          
         present(alertController, animated: true, completion: nil)
     }
