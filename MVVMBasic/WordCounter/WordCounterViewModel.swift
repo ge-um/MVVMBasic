@@ -14,21 +14,7 @@ final class WordCounterViewModel {
             resultText.value = updateCount(text)
         }
     }
-    
-//    var onCountChanged: (() -> Void)?
-    
-//    var newText: String = "" {
-//        didSet {
-//            updateCount()
-//        }
-//    }
-    
-//    var resultText: String = "" {
-//        didSet {
-//            onCountChanged?()
-//        }
-//    }
- 
+
     private func updateCount(_ text: String) -> String {
         return "현재까지 \(text.count)글자 작성중"
     }
