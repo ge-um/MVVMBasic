@@ -6,21 +6,30 @@
 //
 
 final class WordCounterViewModel {
-    var onCountChanged: (() -> Void)?
+    var newText = Observable("")
+    var resultText = Observable("")
     
-    var newText: String = "" {
-        didSet {
-            updateCount()
+    init() {
+        newText.bind { [unowned self] text in
+            resultText.value = updateCount(text)
         }
     }
     
-    var resultText: String = "" {
-        didSet {
-            onCountChanged?()
-        }
-    }
+//    var onCountChanged: (() -> Void)?
+    
+//    var newText: String = "" {
+//        didSet {
+//            updateCount()
+//        }
+//    }
+    
+//    var resultText: String = "" {
+//        didSet {
+//            onCountChanged?()
+//        }
+//    }
  
-    private func updateCount() {
-        resultText = "현재까지 \(newText.count)글자 작성중"
+    private func updateCount(_ text: String) -> String {
+        return "현재까지 \(text.count)글자 작성중"
     }
 }
