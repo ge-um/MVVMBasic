@@ -9,7 +9,7 @@ final class AgeViewModel {
     var ageText: Observable<String?> = Observable("")
     var resultText: Observable<String?> = Observable("")
     
-    init() {
+    private init() {
         ageText.bind { [unowned self] text in
             self.resultText.value = self.generateResultMessage(text)
         }

@@ -10,7 +10,7 @@ final class BMIViewModel {
     var heightText: Observable<String?> = Observable("")
     var resultText: Observable<String?> = Observable("")
 
-    init() {
+    private init() {
         weightText.bind { [unowned self] text in
             self.resultText.value = self.generateResultMessage()
         }
