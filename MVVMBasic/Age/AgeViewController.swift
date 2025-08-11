@@ -72,8 +72,8 @@ class AgeViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel.onResultButtonTapped = { [unowned self] in
-            self.resultLabel.text = self.viewModel.resultText
+        viewModel.resultText.bind { [unowned self] text in
+            self.resultLabel.text = text
         }
     }
     
@@ -82,7 +82,7 @@ class AgeViewController: UIViewController {
     }
     
     @objc func resultButtonTapped() {
-        viewModel.ageText = textField.text
+        viewModel.ageText.value = textField.text
         view.endEditing(true)
     }
 }

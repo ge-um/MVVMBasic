@@ -6,41 +6,38 @@
 //
 
 final class AgeViewModel {
-    var ageText: String? = "" {
-        didSet {
-            resultText = generateResultMessage()
+    var ageText: Observable<String?> = Observable("")
+    var resultText: Observable<String?> = Observable("")
+    
+    init() {
+        ageText.bind { [unowned self] text in
+            self.resultText.value = self.generateResultMessage(text)
         }
     }
-    
-    var resultText: String? = "" {
-        didSet {
-            onResultButtonTapped?()
-        }
-    }
-    
-    var onResultButtonTapped: (() -> Void)?
-    
-    private func validateAge() throws (AgeValidationError) -> String {
-        guard let text = ageText else {
+
+    private func validateAge(_ text: String?) throws (AgeValidationError) -> String {
+        guard let age = ageText.value else {
             throw .nil
         }
-        guard !(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) else {
+        guard !(age.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) else {
             throw .empty
         }
-        guard let num = Int(text) else {
+        guard let num = Int(age) else {
             throw .notNumber
         }
         guard (1...100) ~= num else {
             throw .outOfRange
         }
-        return text
+        return age
     }
     
-    private func generateResultMessage() -> String? {
+    private func generateResultMessage(_ age: String?) -> String? {
         do {
-            return try validateAge()
+            let resultMessage = try validateAge(age)
+            return resultMessage
         } catch {
-            return error.errorDescription
+            let errorMessage = error.errorDescription
+            return errorMessage
         }
     }
 }
