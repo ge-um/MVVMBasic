@@ -14,17 +14,8 @@ class MapViewController: UIViewController {
     private let mapView = MKMapView()
     
     private let list = RestaurantList.restaurantArray
-    private let allAnnotations = RestaurantList.restaurantArray.map {
-        
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
-        annotation.title = $0.name
-        annotation.subtitle = $0.address
-        
-        return annotation
-    }
     
-    private var displayedAnnotations: [MKPointAnnotation] = []
+//    private var displayedAnnotations: [MKPointAnnotation] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,8 +61,20 @@ class MapViewController: UIViewController {
     }
     
     private func setUpInitialData() {
-        displayedAnnotations = allAnnotations
-        mapView.addAnnotations(displayedAnnotations)
+        let annotations = RestaurantList.restaurantArray
+        addAnnotations(annotations)
+    }
+    
+    private func addAnnotations(_ restaurant: [Restaurant]) {
+        let annotations = restaurant.map {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
+            annotation.title = $0.name
+            annotation.subtitle = $0.address
+            
+            return annotation
+        }
+        mapView.addAnnotations(annotations)
     }
 
     @objc private func rightBarButtonTapped() {
@@ -83,44 +86,16 @@ class MapViewController: UIViewController {
         
         Category.allCases.forEach { title in
             let alertAction = UIAlertAction(title: title.rawValue, style: .default) { _ in
+                self.mapView.removeAnnotations(self.mapView.annotations)
+
                 switch title {
                 case .all:
-                    self.mapView.addAnnotations(self.allAnnotations)
-                case .korean:
-                    self.mapView.removeAnnotations(self.mapView.annotations)
-
-                    self.displayedAnnotations = {
-                        RestaurantList.restaurantArray.filter { $0.category == "한식"}.map {
-                            
-                            let annotation = MKPointAnnotation()
-                            annotation.coordinate = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
-                            annotation.title = $0.name
-                            annotation.subtitle = $0.address
-                            
-                            return annotation
-                        }
-                    }()
-                    
-                    self.mapView.addAnnotations(self.displayedAnnotations)
-                case .western:
-                    self.mapView.removeAnnotations(self.mapView.annotations)
-
-                    self.displayedAnnotations = {
-                        RestaurantList.restaurantArray.filter { $0.category == "양식"}.map {
-                            
-                            let annotation = MKPointAnnotation()
-                            annotation.coordinate = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
-                            annotation.title = $0.name
-                            annotation.subtitle = $0.address
-                            
-                            return annotation
-                        }
-                    }()
-                    self.mapView.addAnnotations(self.displayedAnnotations)
+                    self.addAnnotations(RestaurantList.restaurantArray)
                 case .cancel:
-                    self.mapView.removeAnnotations(self.mapView.annotations)
+                    break
+                default:
+                    self.addAnnotations(RestaurantList.restaurantArray.filter { $0.category == title.rawValue })
                 }
-                
             }
             alertController.addAction(alertAction)
         }
