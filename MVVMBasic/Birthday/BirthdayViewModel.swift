@@ -12,7 +12,7 @@ final class BirthdayViewModel {
     var dateString: Observable<(year: String?, month: String?, day: String?)> = Observable(("0", "0", "0"))
     var resultText: Observable<String?> = Observable("")
     
-    private init() {
+    init() {
         dateString.bind { dateString in
             self.resultText.value = self.generateResultMessage(dateString)
         }

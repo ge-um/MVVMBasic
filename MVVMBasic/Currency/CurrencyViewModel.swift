@@ -9,7 +9,7 @@ final class CurrencyViewModel {
     var amountText: Observable<String?> = Observable("")
     var resultText: Observable<String?> = Observable("")
 
-    private init() {
+    init() {
         amountText.bind { [unowned self] text in
             self.resultText.value = validate(text)
         }
