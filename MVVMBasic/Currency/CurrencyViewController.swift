@@ -39,7 +39,6 @@ class CurrencyViewController: UIViewController {
     
     private let resultLabel: UILabel = {
         let label = UILabel()
-        label.text = "환전 결과가 여기에 표시됩니다"
         label.textAlignment = .center
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 16, weight: .medium)

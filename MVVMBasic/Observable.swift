@@ -20,7 +20,7 @@ final class Observable<T> {
     }
     
     func bind(action: @escaping (T) -> Void) {
-        action(value)
+//        action(value)
         self.action = action
     }
 }

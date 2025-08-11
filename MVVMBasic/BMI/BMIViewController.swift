@@ -36,7 +36,6 @@ class BMIViewController: UIViewController {
     
     let resultLabel: UILabel = {
         let label = UILabel()
-        label.text = "여기에 결과를 보여주세요"
         label.textAlignment = .center
         return label
     }()
