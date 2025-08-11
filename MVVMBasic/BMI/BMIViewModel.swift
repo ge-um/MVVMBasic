@@ -6,39 +6,38 @@
 //
 
 final class BMIViewModel {
-    var weightText: String? = "" {
-        didSet {
-            updateBMI()
+    var weightText: Observable<String?> = Observable("")
+    var heightText: Observable<String?> = Observable("")
+    var resultText: Observable<String?> = Observable("")
+
+    init() {
+        weightText.bind { [unowned self] text in
+            self.resultText.value = self.generateResultMessage()
+        }
+        heightText.bind { [unowned self] text in
+            self.resultText.value = self.generateResultMessage()
         }
     }
-    
-    var heightText: String? = "" {
-        didSet {
-            updateBMI()
-        }
-    }
-    
-    private func updateBMI() {
-        resultText = generateResultMessage()
-    }
-    
-    var resultText: String? {
-        didSet {
-            onResultButtonTapped?()
-        }
-    }
-    
-    var onResultButtonTapped: (() -> Void)?
 
     private func validateBMI() throws (BMIValidationError){
-        guard let heightText = heightText, let weightText = weightText else {
+        guard let heightText = heightText.value, let weightText = weightText.value else {
             throw .nil
         }
-        guard let height = Int(heightText), let weight = Int(weightText) else {
+        guard !heightText.isEmpty else {
+            throw .noHeight
+        }
+        guard let height = Int(heightText) else {
             throw .notNumber
         }
+        
         guard (0...300) ~= height else {
             throw .heightOutOfRange
+        }
+        guard !weightText.isEmpty else {
+            throw .noWeight
+        }
+        guard let weight = Int(weightText) else {
+            throw .notNumber
         }
         guard (0...600) ~= weight else {
             throw .weightOutOfRange
@@ -56,8 +55,8 @@ final class BMIViewModel {
         do {
             try validateBMI()
             
-            let weight = Double(weightText!)!
-            let height = Double(heightText!)! / 100
+            let weight = Double(weightText.value!)!
+            let height = Double(heightText.value!)! / 100
             
             let bmi = calculateBMI(height: height, weight: weight)
             return "bmi는 \(bmi)입니다."

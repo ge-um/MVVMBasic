@@ -85,9 +85,12 @@ class BMIViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel.onResultButtonTapped = { [unowned self] in
-            self.resultLabel.text = self.viewModel.resultText
+        viewModel.resultText.bind { text in
+            self.resultLabel.text = text
         }
+//        viewModel.onResultButtonTapped = { [unowned self] in
+//            self.resultLabel.text = self.viewModel.resultText
+//        }
     }
     
     private func bindAction() {
@@ -99,8 +102,8 @@ class BMIViewController: UIViewController {
     }
     
     @objc func resultButtonTapped() {
-        viewModel.heightText = heightTextField.text
-        viewModel.weightText = weightTextField.text
+        viewModel.heightText.value = heightTextField.text
+        viewModel.weightText.value = weightTextField.text
 
         view.endEditing(true)
     }

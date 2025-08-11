@@ -9,6 +9,8 @@ import Foundation
 
 enum BMIValidationError: Error {
     case `nil`
+    case noWeight
+    case noHeight
     case notNumber
     case heightOutOfRange
     case weightOutOfRange
@@ -19,6 +21,10 @@ extension BMIValidationError: LocalizedError {
         switch self {
         case .nil:
             return "nil입니다."
+        case .noWeight:
+            return "몸무게를 입력해주세요."
+        case .noHeight:
+            return "키를 입력해주세요."
         case .notNumber:
             return "숫자를 입력해주세요"
         case .heightOutOfRange:
