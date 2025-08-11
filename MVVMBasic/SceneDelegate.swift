@@ -18,20 +18,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
         
         let tabBarController = UITabBarController()
+        
         let ageVC = AgeViewController()
         ageVC.tabBarItem = UITabBarItem(title: "나이", image: UIImage(systemName: "person.fill"), tag: 0)
+        
         let bmiVC = BMIViewController()
         bmiVC.tabBarItem = UITabBarItem(title: "BMI", image: UIImage(systemName: "waveform.path.ecg"), tag: 1)
+        
         let birthDayVC = BirthDayViewController()
         birthDayVC.tabBarItem = UITabBarItem(title: "생년월일", image: UIImage(systemName: "calendar"), tag: 2)
+        
         let wordCounterVC = WordCounterViewController()
         wordCounterVC.tabBarItem = UITabBarItem(title: "단어", image: UIImage(systemName: "opticaldiscdrive") , tag: 3)
+        
         let currencyVC = CurrencyViewController()
         currencyVC.tabBarItem = UITabBarItem(title: "환율", image: UIImage(systemName: "dollarsign.bank.building"), tag: 4)
+        
         let mbtiVC = MBTIViewController()
         mbtiVC.tabBarItem = UITabBarItem(title: "MBTI", image: UIImage(systemName: "person.circle"), tag: 5)
         
-        tabBarController.viewControllers = [ageVC, bmiVC, birthDayVC, wordCounterVC, currencyVC, mbtiVC]
+        let mapVC = MapViewController()
+        mapVC.tabBarItem = UITabBarItem(title: "Map", image: UIImage(systemName: "map"), tag: 6)
+        
+        tabBarController.viewControllers = [ageVC, bmiVC, birthDayVC, wordCounterVC, currencyVC, mbtiVC, mapVC]
         tabBarController.tabBar.tintColor = .systemBlue
         tabBarController.tabBar.unselectedItemTintColor = .systemGray
         
