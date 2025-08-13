@@ -30,10 +30,11 @@ final class MBTIViewController: UIViewController {
         return imageView
     }()
     
-    private var nicknameTextField: UITextField = {
+    private lazy var nicknameTextField: UITextField = {
        let textField = UITextField()
         textField.attributedPlaceholder = NSAttributedString(string: "닉네임을 입력해주세요 :)", attributes: [.foregroundColor: UIColor.C_2, .font: UIFont.systemFont(ofSize: 15)])
         textField.textColor = .black
+        textField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         return textField
     }()
     
@@ -188,11 +189,18 @@ final class MBTIViewController: UIViewController {
     private func bindViewModel() {
         viewModel.output.stateText.bind { [unowned self] stateText in
             self.stateLabel.text = self.viewModel.output.stateText.value
-            self.stateLabel.textColor = self.viewModel.output.stateTextColor.value ? .C_3 : .C_1
+        }
+        
+        viewModel.output.stateTextColor.bind { [unowned self] color in
+            self.stateLabel.textColor = color ? .C_1 : .C_3
         }
     }
     
-    @objc private func completeButtonTapped() {
+    @objc private func textFieldEditingChanged() {
         viewModel.input.nickname.value = nicknameTextField.text
     }
+    
+    @objc private func completeButtonTapped() {
+    }
+
 }
