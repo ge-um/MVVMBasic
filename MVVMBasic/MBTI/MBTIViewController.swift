@@ -17,10 +17,16 @@ final class MBTIViewController: UIViewController {
     
     private var profileImageView: UIImageView = {
        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "star")
+        
+        let profileImage = MBTI.allCases.randomElement()?.profileImage ?? MBTI.enfp.rawValue
+        imageView.image = UIImage(systemName: profileImage)
+        
+        imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 50
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .C_1
+        imageView.layer.borderColor = UIColor.C_1.cgColor
+        imageView.layer.borderWidth = 5
+        
         return imageView
     }()
     
