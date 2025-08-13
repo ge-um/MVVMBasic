@@ -242,7 +242,6 @@ final class MBTIViewController: UIViewController {
         mbtiButtonView.arrangedSubviews.forEach { view in
             guard let button = view as? UIButton else { return }
             button.isSelected = (sender == button)
-//            button.isUserInteractionEnabled = (sender != button)
         }
         
         mbtiButtonView.selectedTitle = sender.configuration?.title
@@ -259,5 +258,8 @@ final class MBTIViewController: UIViewController {
         }
     }
     
-    @objc private func completeButtonTapped() {}
+    @objc private func completeButtonTapped() {
+        let vc = ProfileImageSettingViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
