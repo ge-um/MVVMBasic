@@ -55,6 +55,27 @@ final class MBTIViewController: UIViewController {
         return button
     }()
     
+    let mbtiLabel: UILabel = {
+        let label = UILabel()
+        label.text = "MBTI"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        return label
+    }()
+    
+    private let eiButtonView = MBTIButtonView(title1: "E", title2: "I")
+    private let snButtonView = MBTIButtonView(title1: "S", title2: "N")
+    private let tfButtonView = MBTIButtonView(title1: "T", title2: "F")
+    private let jpButtonView = MBTIButtonView(title1: "J", title2: "P")
+    
+    private let buttonStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 12
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+    
     private let viewModel = MBTIViewModel()
     
     override func viewDidLoad() {
@@ -74,6 +95,14 @@ final class MBTIViewController: UIViewController {
         view.addSubview(textFieldLine)
         view.addSubview(completeButton)
         view.addSubview(stateLabel)
+        view.addSubview(mbtiLabel)
+        
+        buttonStackView.addArrangedSubview(eiButtonView)
+        buttonStackView.addArrangedSubview(snButtonView)
+        buttonStackView.addArrangedSubview(tfButtonView)
+        buttonStackView.addArrangedSubview(jpButtonView)
+        
+        view.addSubview(buttonStackView)
         
         navigationLine.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
@@ -100,7 +129,21 @@ final class MBTIViewController: UIViewController {
         
         stateLabel.snp.makeConstraints { make in
             make.top.equalTo(textFieldLine.snp.bottom).offset(12)
+            make.height.equalTo(20)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(28)
+        }
+        
+        mbtiLabel.snp.makeConstraints { make in
+            make.top.equalTo(stateLabel.snp.bottom).offset(28)
+            make.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.width.greaterThanOrEqualTo(20)
+        }
+        
+        buttonStackView.snp.makeConstraints { make in
+            make.top.equalTo(stateLabel.snp.bottom).offset(24)
+            make.height.equalTo(54 * 2 + 12)
+            make.width.equalTo(54 * 4 + 12 * 3)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         completeButton.snp.makeConstraints { make in
