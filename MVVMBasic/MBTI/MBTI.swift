@@ -30,4 +30,4 @@ enum MBTI: String, CaseIterable {
     }
 }
 
-enum MBTIType { case ei, sn, tf, jp }
+enum MBTIType{ case ei, sn, tf, jp }

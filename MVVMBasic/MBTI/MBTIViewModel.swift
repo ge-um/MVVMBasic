@@ -24,7 +24,10 @@ final class MBTIViewModel {
         input = Input()
         output = Output()
 
-        input.nickname.lazyBind { [unowned self] _ in
+        input.nickname.bind { [unowned self] nickname in
+            guard nickname != nil else {
+                return
+            }
             self.evaluateNicknameValidation()
         }
         

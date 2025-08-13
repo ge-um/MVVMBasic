@@ -101,6 +101,23 @@ final class MBTIViewController: UIViewController {
         bindViewModel()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        nicknameTextField.text = nil
+        viewModel.output.stateText.value = nil
+        
+        viewModel.input.selectedButtonTitle.value = (nil, nil, nil, nil)
+        
+        eiButtonView.button1.isSelected = false
+        eiButtonView.button2.isSelected = false
+        snButtonView.button1.isSelected = false
+        snButtonView.button2.isSelected = false
+        tfButtonView.button1.isSelected = false
+        tfButtonView.button2.isSelected = false
+        jpButtonView.button1.isSelected = false
+        jpButtonView.button2.isSelected = false
+    }
+    
     private func setUpUI() {
         view.addSubview(navigationLine)
         view.addSubview(profileImageView)
