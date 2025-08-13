@@ -9,13 +9,13 @@ import SnapKit
 import UIKit
 
 final class MBTIViewController: UIViewController {
-    private var navigationLine: UIView = {
+    private let navigationLine: UIView = {
         let view = UIView()
         view.backgroundColor = .C_2.withAlphaComponent(0.3)
         return view
     }()
     
-    private var profileImageView: UIImageView = {
+    private let profileImageView: UIImageView = {
        let imageView = UIImageView()
         
         let profileImage = MBTI.allCases.randomElement()?.profileImage ?? MBTI.enfp.rawValue
@@ -38,20 +38,20 @@ final class MBTIViewController: UIViewController {
         return textField
     }()
     
-    private var textFieldLine: UIView = {
+    private let textFieldLine: UIView = {
         let view = UIView()
         view.backgroundColor = .C_2.withAlphaComponent(0.3)
         return view
     }()
     
-    private var stateLabel: UILabel = {
+    private let stateLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
         label.textColor = .C_3
         return label
     }()
     
-    private var completeButton: UIButton = {
+    private let completeButton: UIButton = {
         let button = UIButton()
         var config = UIButton.Configuration.filled()
         config.title = "완료"
@@ -62,7 +62,7 @@ final class MBTIViewController: UIViewController {
         return button
     }()
     
-    let mbtiLabel: UILabel = {
+    private let mbtiLabel: UILabel = {
         let label = UILabel()
         label.text = "MBTI"
         label.textColor = .black
