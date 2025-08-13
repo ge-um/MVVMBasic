@@ -11,10 +11,13 @@ import UIKit
 final class MBTIButtonView: UIStackView {
     let title1: String
     let title2: String
+    var type: MBTIType
     
-    init(title1: String, title2: String) {
+    init(title1: String, title2: String, type: MBTIType) {
         self.title1 = title1
         self.title2 = title2
+        self.type = type
+        
         super.init(frame: .zero)
         
         distribution = .fillEqually
@@ -28,6 +31,8 @@ final class MBTIButtonView: UIStackView {
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    var selectedTitle: String?
     
     lazy var button1: UIButton = {
         var config = UIButton.Configuration.borderedTinted()
@@ -46,9 +51,7 @@ final class MBTIButtonView: UIStackView {
             
             button.configuration = config
         }
-        
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        
+                        
         return button
     }()
     
@@ -71,19 +74,9 @@ final class MBTIButtonView: UIStackView {
             
             button.configuration = config
         }
-        
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        
+                
         return button
     }()
-    
-    
-    @objc private func buttonTapped(sender: UIButton) {
-        [button1, button2].forEach {
-            $0.isSelected = (sender == $0)
-            $0.isUserInteractionEnabled = (sender != $0)
-        }
-    }
 }
 
 

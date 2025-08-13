@@ -51,14 +51,20 @@ final class MBTIViewController: UIViewController {
         return label
     }()
     
-    private let completeButton: UIButton = {
+    private lazy var completeButton: UIButton = {
         let button = UIButton()
         var config = UIButton.Configuration.filled()
         config.title = "완료"
-        config.baseBackgroundColor = .C_2
         config.baseForegroundColor = .white
         config.cornerStyle = .capsule
+        
         button.configuration = config
+        button.configurationUpdateHandler = { button in
+            config.baseBackgroundColor = button.isEnabled ? .C_1 : .C_2
+        }
+        
+        button.isEnabled = false
+        
         return button
     }()
     
@@ -70,10 +76,10 @@ final class MBTIViewController: UIViewController {
         return label
     }()
     
-    private let eiButtonView = MBTIButtonView(title1: "E", title2: "I")
-    private let snButtonView = MBTIButtonView(title1: "S", title2: "N")
-    private let tfButtonView = MBTIButtonView(title1: "T", title2: "F")
-    private let jpButtonView = MBTIButtonView(title1: "J", title2: "P")
+    private let eiButtonView = MBTIButtonView(title1: "E", title2: "I", type: .ei)
+    private let snButtonView = MBTIButtonView(title1: "S", title2: "N", type: .sn)
+    private let tfButtonView = MBTIButtonView(title1: "T", title2: "F", type: .tf)
+    private let jpButtonView = MBTIButtonView(title1: "J", title2: "P", type: .jp)
     
     private let buttonStackView: UIStackView = {
         let stackView = UIStackView()
@@ -184,6 +190,16 @@ final class MBTIViewController: UIViewController {
     
     private func setUpAction() {
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
+        
+        eiButtonView.button1.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        eiButtonView.button2.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        snButtonView.button1.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        snButtonView.button2.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        tfButtonView.button1.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        tfButtonView.button2.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        jpButtonView.button1.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        jpButtonView.button2.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+
     }
     
     private func bindViewModel() {
@@ -194,13 +210,40 @@ final class MBTIViewController: UIViewController {
         viewModel.output.stateTextColor.bind { [unowned self] color in
             self.stateLabel.textColor = color ? .C_1 : .C_3
         }
+        
+        viewModel.output.mbtiValidation.bind { [unowned self] validation in
+            self.completeButton.isEnabled = validation
+        }
     }
     
     @objc private func textFieldEditingChanged() {
         viewModel.input.nickname.value = nicknameTextField.text
     }
     
-    @objc private func completeButtonTapped() {
-    }
+    @objc private func buttonTapped(sender: UIButton) {
+        guard let mbtiButtonView = sender.superview as? MBTIButtonView else {
+            return
+        }
 
+        mbtiButtonView.arrangedSubviews.forEach { view in
+            guard let button = view as? UIButton else { return }
+            button.isSelected = (sender == button)
+            button.isUserInteractionEnabled = (sender != button)
+        }
+        
+        mbtiButtonView.selectedTitle = sender.configuration?.title
+        
+        switch mbtiButtonView.type {
+        case .ei:
+            viewModel.input.selectedButtonTitle.value.ei = mbtiButtonView.selectedTitle
+        case .sn:
+            viewModel.input.selectedButtonTitle.value.sn = mbtiButtonView.selectedTitle
+        case .tf:
+            viewModel.input.selectedButtonTitle.value.tf = mbtiButtonView.selectedTitle
+        case .jp:
+            viewModel.input.selectedButtonTitle.value.jp = mbtiButtonView.selectedTitle
+        }
+    }
+    
+    @objc private func completeButtonTapped() {}
 }

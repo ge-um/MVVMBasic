@@ -29,3 +29,5 @@ enum MBTI: String, CaseIterable {
         return self.rawValue
     }
 }
+
+enum MBTIType { case ei, sn, tf, jp }

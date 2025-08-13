@@ -8,11 +8,13 @@
 final class MBTIViewModel {
     struct Input {
         var nickname: Observable<String?> = Observable(nil)
+        var selectedButtonTitle: Observable<(ei: String?, sn: String?, tf: String?, jp: String?)> = Observable((nil, nil, nil, nil))
     }
     
     struct Output {
         var stateText: Observable<String?> = Observable(nil)
         var stateTextColor: Observable<Bool> = Observable(false)
+        var mbtiValidation: Observable<Bool> = Observable(false)
     }
     
     var input: Input
@@ -24,6 +26,10 @@ final class MBTIViewModel {
 
         input.nickname.lazyBind { [unowned self] _ in
             self.evaluateNicknameValidation()
+        }
+        
+        input.selectedButtonTitle.lazyBind { [unowned self] (ei, sn, tf, jp) in
+            self.evaluateMBTIValidation(ei, sn, tf, jp)
         }
     }
     
@@ -52,6 +58,10 @@ final class MBTIViewModel {
             output.stateText.value = error.errorDescription
             output.stateTextColor.value = false
         }
+    }
+    
+    private func evaluateMBTIValidation(_ ei: String?, _ sn: String?, _ tf: String?, _ jp: String?) {
+        output.mbtiValidation.value = ei != nil && sn != nil && tf != nil && jp != nil
     }
 }
 
