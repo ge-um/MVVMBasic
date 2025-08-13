@@ -108,14 +108,11 @@ final class MBTIViewController: UIViewController {
         
         viewModel.input.selectedButtonTitle.value = (nil, nil, nil, nil)
         
-        eiButtonView.button1.isSelected = false
-        eiButtonView.button2.isSelected = false
-        snButtonView.button1.isSelected = false
-        snButtonView.button2.isSelected = false
-        tfButtonView.button1.isSelected = false
-        tfButtonView.button2.isSelected = false
-        jpButtonView.button1.isSelected = false
-        jpButtonView.button2.isSelected = false
+        
+        [eiButtonView, snButtonView, tfButtonView, jpButtonView].forEach { buttonView in
+            buttonView.button1.isSelected = false
+            buttonView.button2.isSelected = false
+        }
     }
     
     private func setUpUI() {
@@ -245,7 +242,7 @@ final class MBTIViewController: UIViewController {
         mbtiButtonView.arrangedSubviews.forEach { view in
             guard let button = view as? UIButton else { return }
             button.isSelected = (sender == button)
-            button.isUserInteractionEnabled = (sender != button)
+//            button.isUserInteractionEnabled = (sender != button)
         }
         
         mbtiButtonView.selectedTitle = sender.configuration?.title
