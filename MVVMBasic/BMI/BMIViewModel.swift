@@ -11,10 +11,10 @@ final class BMIViewModel {
     var resultText: Observable<String?> = Observable("")
 
     init() {
-        weightText.bind { [unowned self] text in
+        weightText.lazyBind { [unowned self] text in
             self.resultText.value = self.generateResultMessage()
         }
-        heightText.bind { [unowned self] text in
+        heightText.lazyBind { [unowned self] text in
             self.resultText.value = self.generateResultMessage()
         }
     }

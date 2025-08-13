@@ -10,7 +10,7 @@ final class WordCounterViewModel {
     var resultText = Observable("")
     
     init() {
-        newText.bind { [unowned self] text in
+        newText.lazyBind { [unowned self] text in
             resultText.value = updateCount(text)
         }
     }

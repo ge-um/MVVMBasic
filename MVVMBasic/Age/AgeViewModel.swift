@@ -10,7 +10,7 @@ final class AgeViewModel {
     var resultText: Observable<String?> = Observable("")
     
     init() {
-        ageText.bind { [unowned self] text in
+        ageText.lazyBind { [unowned self] text in
             self.resultText.value = self.generateResultMessage(text)
         }
     }

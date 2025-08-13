@@ -84,7 +84,7 @@ class BMIViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel.resultText.bind { text in
+        viewModel.resultText.lazyBind { text in
             self.resultLabel.text = text
         }
 //        viewModel.onResultButtonTapped = { [unowned self] in

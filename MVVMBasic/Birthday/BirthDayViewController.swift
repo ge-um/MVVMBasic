@@ -145,7 +145,7 @@ class BirthDayViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel.resultText.bind { [unowned self] text in
+        viewModel.resultText.lazyBind { [unowned self] text in
             self.resultLabel.text = text
         }
     }

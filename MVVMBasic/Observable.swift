@@ -19,8 +19,11 @@ final class Observable<T> {
         self.value = value
     }
     
+    func lazyBind(action: @escaping (T) -> Void) {
+        self.action = action
+    }
+    
     func bind(action: @escaping (T) -> Void) {
-//        action(value)
         self.action = action
     }
 }

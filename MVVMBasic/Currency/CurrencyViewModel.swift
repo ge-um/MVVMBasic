@@ -10,7 +10,7 @@ final class CurrencyViewModel {
     var resultText: Observable<String?> = Observable("")
 
     init() {
-        amountText.bind { [unowned self] text in
+        amountText.lazyBind { [unowned self] text in
             self.resultText.value = validate(text)
         }
     }

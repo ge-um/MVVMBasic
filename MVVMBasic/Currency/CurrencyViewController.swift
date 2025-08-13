@@ -95,7 +95,7 @@ class CurrencyViewController: UIViewController {
 //        viewModel.onConvertButtonTapped = { [unowned self] in
 //            self.resultLabel.text = self.viewModel.resultText
 //        }
-        viewModel.resultText.bind { [unowned self] text in
+        viewModel.resultText.lazyBind { [unowned self] text in
             self.resultLabel.text = text
         }
     }
