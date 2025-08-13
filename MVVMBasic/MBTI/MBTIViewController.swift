@@ -180,13 +180,13 @@ final class MBTIViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel.onCompleteButtonTapped = { [unowned self] in
-            self.stateLabel.text = self.viewModel.stateText
-            self.stateLabel.textColor = self.viewModel.stateTextColor ? .C_1 : .C_3
+        viewModel.output.stateText.bind { [unowned self] stateText in
+            self.stateLabel.text = self.viewModel.output.stateText.value
+            self.stateLabel.textColor = self.viewModel.output.stateTextColor.value ? .C_3 : .C_1
         }
     }
     
     @objc private func completeButtonTapped() {
-        viewModel.nicknameText = nicknameTextField.text
+        viewModel.input.nickname.value = nicknameTextField.text
     }
 }

@@ -6,24 +6,29 @@
 //
 
 final class MBTIViewModel {
-    var nicknameText: String? {
-        didSet {
-            stateText = generateStateMessage()
-        }
+    struct Input {
+        var nickname: Observable<String?> = Observable(nil)
     }
     
-    var stateText: String? {
-        didSet {
-            onCompleteButtonTapped?()
-        }
+    struct Output {
+        var stateText: Observable<String?> = Observable(nil)
+        var stateTextColor: Observable<Bool> = Observable(false)
     }
     
-    var stateTextColor: Bool = false
+    var input: Input
+    var output: Output
     
-    var onCompleteButtonTapped: (() -> Void)?
+    init() {
+        input = Input()
+        output = Output()
+
+        input.nickname.lazyBind { [unowned self] _ in
+            self.evaluateNicknameValidation()
+        }
+    }
     
     private func validate() throws (NicknameValidationError) {
-        guard let nickname = nicknameText else { throw .nil }
+        guard let nickname = input.nickname.value else { throw .nil }
         
         guard (2..<10) ~= nickname.count else {
             throw .outOfRange
@@ -38,14 +43,14 @@ final class MBTIViewModel {
         }
     }
     
-    private func generateStateMessage() -> String? {
+    private func evaluateNicknameValidation() {
         do {
             try validate()
-            stateTextColor = true
-            return "사용할 수 있는 닉네임이에요."
+            output.stateText.value = "사용할 수 있는 닉네임이에요."
+            output.stateTextColor.value = true
         } catch {
-            stateTextColor = false
-            return error.errorDescription
+            output.stateText.value = error.errorDescription
+            output.stateTextColor.value = false
         }
     }
 }
